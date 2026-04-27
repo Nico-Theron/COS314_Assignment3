@@ -28,6 +28,43 @@ public class DecisionNode extends Node {
     }
 
     @Override
+    public int countNodes() {
+        return 1 + left.countNodes() + right.countNodes();
+    }
+
+    @Override
+    public Node getNodeAt(int index) {
+        if (index == 0) {
+            return this;
+        }
+
+        int leftCount = left.countNodes();
+
+        if (index <= leftCount) {
+            return left.getNodeAt(index - 1);
+        } else {
+            return right.getNodeAt(index - 1 - leftCount);
+        }
+    }
+
+    @Override
+    public Node replaceNodeAt(int index, Node replacement) {
+        if (index == 0) {
+            return replacement.copy();
+        }
+
+        int leftCount = left.countNodes();
+
+        if (index <= leftCount) {
+            Node newLeft = left.replaceNodeAt(index - 1, replacement);
+            return new DecisionNode(featureIndex, threshold, newLeft, right.copy());
+        } else {
+            Node newRight = right.replaceNodeAt(index - 1 - leftCount, replacement);
+            return new DecisionNode(featureIndex, threshold, left.copy(), newRight);
+        }
+    }
+
+    @Override
     public String toString() {
         return "(if feature[" + featureIndex + "] <= " + threshold +
                 " then " + left.toString() +

@@ -18,6 +18,29 @@ public class LeafNode extends Node {
     }
 
     @Override
+    public int countNodes() {
+        return 1;
+    }
+
+    @Override
+    public Node getNodeAt(int index) {
+        if (index == 0) {
+            return this;
+        }
+
+        return null;
+    }
+
+    @Override
+    public Node replaceNodeAt(int index, Node replacement) {
+        if (index == 0) {
+            return replacement.copy();
+        }
+
+        return this.copy();
+    }
+
+    @Override
     public String toString() {
         return String.valueOf(predictedClass);
     }
