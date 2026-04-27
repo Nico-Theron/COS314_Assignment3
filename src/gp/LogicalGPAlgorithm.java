@@ -54,9 +54,13 @@ public class LogicalGPAlgorithm {
                 bestOverall = bestThisGeneration.copy();
             }
 
+            double accuracy = bestThisGeneration.getFitness();
+            double fMeasure = evaluator.calculateFMeasure(bestThisGeneration.getTree(), trainData);
+
             System.out.println("Generation " + generation);
-            System.out.println("Best accuracy: " + (bestThisGeneration.getFitness() * 100) + "%");
-            System.out.println("Best tree: " + bestThisGeneration.getTree());
+            System.out.println("Accuracy: " + (accuracy * 100) + "%");
+            System.out.println("F-measure: " + fMeasure);
+            System.out.println("Tree: " + bestThisGeneration.getTree());
             System.out.println("----------------------------------------");
 
             if (generation == maxGenerations) {
