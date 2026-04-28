@@ -7,7 +7,7 @@ import utils.CSVExporter;
 
 public class Main {
 
-    static final int RUNS = 10;
+    static final int RUNS = 30;
 
     public static void main(String[] args) throws Exception {
 
