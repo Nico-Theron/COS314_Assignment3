@@ -16,7 +16,9 @@ public class SymbolicFitnessEvaluator {
 
         }
 
-        return (double) correct / dataset.size();
+//        double penalty = tree.countNodes() * 0.001;
+        double fitness = ((double) correct / dataset.size())/* - penalty*/;
+        return (fitness > 0) ? fitness : 0;
     }
 
     public double calculateFMeasure(SymbolicNode tree, Dataset dataset) {
