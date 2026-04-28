@@ -1,29 +1,29 @@
 package gp;
 
 import data.Dataset;
-import fitness.FitnessEvaluator;
-import operators.Crossover;
-import operators.Mutation;
-import operators.Selection;
-import tree.TreeGenerator;
+import fitness.SymbolicFitnessEvaluator;
+import symbolicOperators.SymbolicCrossover;
+import symbolicOperators.SymbolicMutation;
+import symbolicOperators.SymbolicSelection;
+import symbolicTree.SymbolicTreeGenerator;
 
 import java.util.Random;
 
-public class LogicalGPAlgorithm {
+public class SymbolicGPAlgorithm {
     private int populationSize;
     private int maxGenerations;
     private int initialMaxDepth;
     private double crossoverRate;
     private double mutationRate;
 
-    private TreeGenerator generator;
-    private FitnessEvaluator evaluator;
-    private Selection selection;
-    private Crossover crossover;
-    private Mutation mutation;
+    private SymbolicTreeGenerator generator;
+    private SymbolicFitnessEvaluator evaluator;
+    private SymbolicSelection selection;
+    private SymbolicCrossover crossover;
+    private SymbolicMutation mutation;
     private Random random;
 
-    public LogicalGPAlgorithm(Random random) {
+    public SymbolicGPAlgorithm(Random random) {
         this.random = random;
 
         this.populationSize = 200;
@@ -32,29 +32,30 @@ public class LogicalGPAlgorithm {
         this.crossoverRate = 0.80;
         this.mutationRate = 0.10;
 
-        this.generator = new TreeGenerator(random);
-        this.evaluator = new FitnessEvaluator();
-        this.selection = new Selection(random, 5);
-        this.crossover = new Crossover(random);
-        this.mutation = new Mutation(random, generator, 2);
+        this.generator = new SymbolicTreeGenerator(random);
+        this.evaluator = new SymbolicFitnessEvaluator();
+        this.selection = new SymbolicSelection(random, 5);
+        this.crossover = new SymbolicCrossover(random);
+        this.mutation = new SymbolicMutation(random, generator, 2);
     }
 
-    public Individual train(Dataset trainData) {
-        Population population = new Population(populationSize, generator, initialMaxDepth);
+    public SymbolicIndividual train(Dataset trainData) {
+        SymbolicPopulation population = new SymbolicPopulation(populationSize, generator, initialMaxDepth);
         population.evaluate(evaluator, trainData);
 
-        Individual bestOverall = population.getBestIndividual().copy();
+        SymbolicIndividual bestOverall = population.getBestIndividual().copy();
 
         for (int generation = 0; generation <= maxGenerations; generation++) {
             population.evaluate(evaluator, trainData);
 
-            Individual bestThisGeneration = population.getBestIndividual();
+            SymbolicIndividual bestThisGeneration = population.getBestIndividual();
 
             if (bestThisGeneration.getFitness() > bestOverall.getFitness()) {
                 bestOverall = bestThisGeneration.copy();
             }
 
             double accuracy = bestThisGeneration.getFitness();
+
             double fMeasure = evaluator.calculateFMeasure(bestThisGeneration.getTree(), trainData);
 
 //            System.out.println("Generation " + generation);
@@ -67,16 +68,15 @@ public class LogicalGPAlgorithm {
                 break;
             }
 
-            Population nextPopulation = new Population(populationSize, generator, initialMaxDepth);
+            SymbolicPopulation nextPopulation = new SymbolicPopulation(populationSize, generator, initialMaxDepth);
 
-            // Elitism: keep the best tree unchanged
             nextPopulation.setIndividual(0, bestOverall.copy());
 
             for (int i = 1; i < populationSize; i++) {
-                Individual parent1 = selection.tournamentSelection(population);
-                Individual parent2 = selection.tournamentSelection(population);
+                SymbolicIndividual parent1 = selection.tournamentSelection(population);
+                SymbolicIndividual parent2 = selection.tournamentSelection(population);
 
-                Individual child;
+                SymbolicIndividual child;
 
                 if (random.nextDouble() < crossoverRate) {
                     child = crossover.crossover(parent1, parent2);
