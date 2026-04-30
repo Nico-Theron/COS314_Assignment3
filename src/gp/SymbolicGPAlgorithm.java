@@ -28,9 +28,9 @@ public class SymbolicGPAlgorithm {
 
         this.populationSize = 200;
         this.maxGenerations = 100;
-        this.initialMaxDepth = 3;
+        this.initialMaxDepth = 5;
         this.crossoverRate = 0.80;
-        this.mutationRate = 0.10;
+        this.mutationRate = 0.15;
 
         this.generator = new SymbolicTreeGenerator(random);
         this.evaluator = new SymbolicFitnessEvaluator();
@@ -58,11 +58,11 @@ public class SymbolicGPAlgorithm {
 
             double fMeasure = evaluator.calculateFMeasure(bestThisGeneration.getTree(), trainData);
 
-//            System.out.println("Generation " + generation);
-//            System.out.println("Accuracy: " + (accuracy * 100) + "%");
-//            System.out.println("F-measure: " + fMeasure);
-//            System.out.println("Tree: " + bestThisGeneration.getTree());
-//            System.out.println("----------------------------------------");
+            System.out.println("Generation " + generation);
+            System.out.println("Accuracy: " + (accuracy * 100) + "%");
+            System.out.println("F-measure: " + fMeasure);
+            System.out.println("Tree: " + bestThisGeneration.getTree());
+            System.out.println("----------------------------------------");
 
             if (generation == maxGenerations) {
                 break;
