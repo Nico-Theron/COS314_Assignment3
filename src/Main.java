@@ -1,3 +1,6 @@
+
+package utils;
+
 import data.*;
 import fitness.*;
 import gp.*;
@@ -16,6 +19,11 @@ public class Main {
 
         CSVExporter csv = new CSVExporter("Logical_GP_results.csv");
         CSVExporter csv2 = new CSVExporter("Symbolic_GP_results.csv");
+
+        double[] logicalTestAcc = new double[RUNS];
+        double[] symbolicTestAcc = new double[RUNS];
+        double[] logicalF = new double[RUNS];
+        double[] symbolicF = new double[RUNS];
 
         System.out.println("--------------------------");
         System.out.println("        Logical GP:       ");
@@ -41,6 +49,9 @@ public class Main {
 
             double testAcc = evaluator.calculateAccuracy(best.getTree(), testData);
             double testF = evaluator.calculateFMeasure(best.getTree(), testData);
+
+            logicalTestAcc[run - 1] = testAcc;
+            logicalF[run - 1] = testF;
 
             csv.write(run, seed, trainAcc, trainF, testAcc, testF, runtime);
 
@@ -73,12 +84,16 @@ public class Main {
             double testAcc = evaluator.calculateAccuracy(best.getTree(), testData);
             double testF = evaluator.calculateFMeasure(best.getTree(), testData);
 
+            symbolicTestAcc[run - 1] = testAcc;
+            symbolicF[run - 1] = testF;
+
             csv2.write(run, seed, trainAcc, trainF, testAcc, testF, runtime);
 
             System.out.println("Run " + run + " complete for symbolic GP");
         }
         csv2.close();
-
+        WilcoxonTest.run(logicalTestAcc, symbolicTestAcc, "Wilcoxon_Test_Accuracy.csv");
+        WilcoxonTest.run(logicalF, symbolicF, "Wilcoxon_Test_FMeasure.csv");
         System.out.println("All runs complete.");
         System.out.println("Results saved in 'Logical_GP_results.csv' & 'Symbolic_GP_results.csv' respectively.");
     }
