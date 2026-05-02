@@ -60,7 +60,7 @@ public class LogicalGPAlgorithm {
             System.out.println("Generation " + generation);
             System.out.println("Accuracy: " + (accuracy * 100) + "%");
             System.out.println("F-measure: " + fMeasure);
-            System.out.println("Tree: " + bestThisGeneration.getTree());
+            //System.out.println("Tree: " + bestThisGeneration.getTree());
             System.out.println("----------------------------------------");
 
             if (generation == maxGenerations) {

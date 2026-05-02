@@ -87,7 +87,7 @@ public class WilcoxonTest {
     }
 
     private static int getCriticalValue(int n) {
-        File file = new File("wilcoxon_critical_values.csv");
+        File file = new File("../wilcoxon_critical_values.csv");
         if (!file.exists()) {
             System.err.println("Critical values file not found!");
             return 0;
