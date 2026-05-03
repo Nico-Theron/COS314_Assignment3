@@ -9,7 +9,7 @@ public class SymbolicLeafNode extends SymbolicNode {
 
     @Override
     public double evaluate(int[] row) {
-        return row[featureIndex];
+        return row[featureIndex] / 12.0;
     }
 
     @Override

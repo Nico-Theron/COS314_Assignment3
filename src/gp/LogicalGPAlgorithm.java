@@ -28,13 +28,13 @@ public class LogicalGPAlgorithm {
 
         this.populationSize = 200;
         this.maxGenerations = 100;
-        this.initialMaxDepth = 5;
+        this.initialMaxDepth = 6;
         this.crossoverRate = 0.80;
-        this.mutationRate = 0.15;
+        this.mutationRate = 0.18;
 
         this.generator = new TreeGenerator(random);
         this.evaluator = new FitnessEvaluator();
-        this.selection = new Selection(random, 5);
+        this.selection = new Selection(random, 3);
         this.crossover = new Crossover(random);
         this.mutation = new Mutation(random, generator, 2);
     }
@@ -54,13 +54,16 @@ public class LogicalGPAlgorithm {
                 bestOverall = bestThisGeneration.copy();
             }
 
-            double accuracy = bestThisGeneration.getFitness();
+            double accuracy = evaluator.getRawAccuracy(bestThisGeneration.getTree(), trainData);
+            double bestFitness = bestThisGeneration.getFitness();
             double fMeasure = evaluator.calculateFMeasure(bestThisGeneration.getTree(), trainData);
+            int size = bestThisGeneration.getTree().countNodes();
 
             System.out.println("Generation " + generation);
             System.out.println("Accuracy: " + (accuracy * 100) + "%");
+            System.out.println("Fitness: " + bestFitness);
+            System.out.println("Tree Size: " + size);
             System.out.println("F-measure: " + fMeasure);
-            //System.out.println("Tree: " + bestThisGeneration.getTree());
             System.out.println("----------------------------------------");
 
             if (generation == maxGenerations) {

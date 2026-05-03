@@ -5,7 +5,7 @@ public abstract class SymbolicNode {
 
     // Checks what class it belongs to
     public int classify(int[] row) {
-        return evaluate(row) >= 0.5 ? 1 : 0;
+        return evaluate(row) >= 0.55 ? 1 : 0;
     }
 
     public abstract SymbolicNode copy();

@@ -1,7 +1,7 @@
 Statistic,Value
-W+: 342.0
-W-: 123.0
-Test Statistic: 123.0
+W+: 259.0
+W-: 206.0
+Test Statistic: 206.0
 Valid Pairs (n): 30
 Critical Value: 151
-Conclusion: Reject H0
+Conclusion: Fail to Reject H0

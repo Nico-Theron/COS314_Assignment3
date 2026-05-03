@@ -4,20 +4,22 @@ import data.Dataset;
 import symbolicTree.SymbolicNode;
 
 public class SymbolicFitnessEvaluator {
-    public double calculateAccuracy(SymbolicNode tree, Dataset dataset) {
+
+    public double getRawAccuracy(SymbolicNode tree, Dataset dataset){
         int correct = 0;
-
-        for (int i = 0; i < dataset.size(); i++) {
+        for (int i = 0; i < dataset.size(); i++){
             int prediction = tree.classify(dataset.features[i]);
-
-            if (prediction == dataset.labels[i]) {
+            if (prediction == dataset.labels[i]){
                 correct++;
             }
-
         }
+        return (double) correct / dataset.size();
+    }
 
-//        double penalty = tree.countNodes() * 0.001;
-        double fitness = ((double) correct / dataset.size())/* - penalty*/;
+    public double calculateAccuracy(SymbolicNode tree, Dataset dataset) {
+        double accuracy = getRawAccuracy(tree, dataset);
+        double penalty = tree.countNodes() * 0.0002;
+        double fitness = accuracy - penalty;
         return (fitness > 0) ? fitness : 0;
     }
 
