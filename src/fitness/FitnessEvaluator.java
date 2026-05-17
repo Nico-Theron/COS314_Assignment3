@@ -5,19 +5,22 @@ import tree.Node;
 
 public class FitnessEvaluator {
 
-    public double calculateAccuracy(Node tree, Dataset dataset) {
+    public double getRawAccuracy(Node tree, Dataset dataset){
         int correct = 0;
-
-        for (int i = 0; i < dataset.size(); i++) {
+        for (int i = 0; i < dataset.size(); i++){
             int prediction = tree.classify(dataset.features[i]);
-
-            if (prediction == dataset.labels[i]) {
+            if (prediction == dataset.labels[i]){
                 correct++;
             }
-            
         }
-
         return (double) correct / dataset.size();
+    }
+
+    public double calculateAccuracy(Node tree, Dataset dataset) {
+        double accuracy = getRawAccuracy(tree, dataset);
+        double penalty = tree.countNodes() * 0.0005;
+        double fitness = accuracy - penalty;
+        return (fitness > 0) ? fitness : 0;
     }
 
     public double calculateFMeasure(Node tree, Dataset dataset) {

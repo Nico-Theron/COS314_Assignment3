@@ -28,13 +28,13 @@ public class SymbolicGPAlgorithm {
 
         this.populationSize = 200;
         this.maxGenerations = 100;
-        this.initialMaxDepth = 3;
-        this.crossoverRate = 0.80;
-        this.mutationRate = 0.10;
+        this.initialMaxDepth = 5;
+        this.crossoverRate = 0.75;
+        this.mutationRate = 0.25;
 
         this.generator = new SymbolicTreeGenerator(random);
         this.evaluator = new SymbolicFitnessEvaluator();
-        this.selection = new SymbolicSelection(random, 5);
+        this.selection = new SymbolicSelection(random, 2);
         this.crossover = new SymbolicCrossover(random);
         this.mutation = new SymbolicMutation(random, generator, 2);
     }
@@ -54,15 +54,17 @@ public class SymbolicGPAlgorithm {
                 bestOverall = bestThisGeneration.copy();
             }
 
-            double accuracy = bestThisGeneration.getFitness();
-
+            double accuracy = evaluator.getRawAccuracy(bestThisGeneration.getTree(), trainData);
+            double bestFitness = bestThisGeneration.getFitness();
             double fMeasure = evaluator.calculateFMeasure(bestThisGeneration.getTree(), trainData);
+            int size = bestThisGeneration.getTree().countNodes();
 
-//            System.out.println("Generation " + generation);
-//            System.out.println("Accuracy: " + (accuracy * 100) + "%");
-//            System.out.println("F-measure: " + fMeasure);
-//            System.out.println("Tree: " + bestThisGeneration.getTree());
-//            System.out.println("----------------------------------------");
+            System.out.println("Generation " + generation);
+            System.out.println("Accuracy: " + (accuracy * 100) + "%");
+            System.out.println("Fitness: " + bestFitness);
+            System.out.println("Tree Size: " + size);
+            System.out.println("F-measure: " + fMeasure);
+            System.out.println("----------------------------------------");
 
             if (generation == maxGenerations) {
                 break;

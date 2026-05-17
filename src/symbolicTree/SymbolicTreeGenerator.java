@@ -6,7 +6,7 @@ public class SymbolicTreeGenerator {
     private Random random;
 
     private static final int FEATURE_COUNT = 9;
-    private static final char[] OPERATORS = {'+', '-', '*', '/'};
+    private static final char[] OPERATORS = {'+', '-', '/', '+'};
 
     public SymbolicTreeGenerator(Random random) {
         this.random = random;
